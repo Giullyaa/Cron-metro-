@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro Digital</title>
+    <style>
+        /* Estilo básico da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Container principal do cronômetro */
+        .cronometro-container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        /* Título */
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        /* Estilo do display do cronômetro */
+        .display {
+            font-size: 4em;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 30px 0;
+            padding: 10px 20px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+
+        /* Estilo dos controles (botões) */
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .controles button {
+            font-size: 1.1em;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Estilo dos botões específicos */
+        #iniciar {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #iniciar:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #parar {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #parar:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #reiniciar {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        #reiniciar:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cronometro-container">
+        <h1>Cronômetro Digital</h1>
+        <div class="display">
+            <span id="horas">00</span>:<span id="minutos">00</span>:<span id="segundos">00</span>
+        </div>
+        <div class="controles">
+            <button id="iniciar">Iniciar</button>
+            <button id="parar">Parar</button>
+            <button id="reiniciar">Reiniciar</button>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis para controlar o tempo
+        let horas = 0;
+        let minutos = 0;
+        let segundos = 0;
+        let intervalo;
+
+        // Seleção dos elementos do DOM
+        const displayHoras = document.getElementById('horas');
+        const displayMinutos = document.getElementById('minutos');
+        const displaySegundos = document.getElementById('segundos');
+        const btnIniciar = document.getElementById('iniciar');
+        const btnParar = document.getElementById('parar');
+        const btnReiniciar = document.getElementById('reiniciar');
+
+        // Função para formatar o tempo (adiciona '0' à esquerda se for menor que 10)
+        function formatarTempo(tempo) {
+            return tempo < 10 ? `0${tempo}` : tempo;
+        }
+
+        // Função principal para atualizar o cronômetro a cada segundo
+        function atualizarCronometro() {
+            segundos++;
+
+            if (segundos === 60) {
+                segundos = 0;
+                minutos++;
+                if (minutos === 60) {
+                    minutos = 0;
+                    horas++;
+                }
+            }
+
+            displayHoras.textContent = formatarTempo(horas);
+            displayMinutos.textContent = formatarTempo(minutos);
+            displaySegundos.textContent = formatarTempo(segundos);
+        }
+
+        // Evento para o botão Iniciar
+        btnIniciar.addEventListener('click', () => {
+            // Garante que apenas um cronômetro esteja rodando por vez
+            clearInterval(intervalo);
+            intervalo = setInterval(atualizarCronometro, 1000);
+        });
+
+        // Evento para o botão Parar
+        btnParar.addEventListener('click', () => {
+            // Pausa o cronômetro
+            clearInterval(intervalo);
+        });
+
+        // Evento para o botão Reiniciar
+        btnReiniciar.addEventListener('click', () => {
+            // Limpa o intervalo, zera as variáveis e atualiza o display
+            clearInterval(intervalo);
+            horas = 0;
+            minutos = 0;
+            segundos = 0;
+            displayHoras.textContent = '00';
+            displayMinutos.textContent = '00';
+            displaySegundos.textContent = '00';
+        });
+    </script>
+</body>
+</html>
 
